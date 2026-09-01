@@ -9,18 +9,17 @@
 ---
 
 ### Abstract
-Developing lightweight audio authentication tools for resource-constrained IoT and mobile devices is critical. This study extracts Mel-Frequency Cepstral Coefficients (MFCCs) alongside delta and delta-delta spectral features to train fast classical machine learning classifiers (Random Forest, SVM, XGBoost) for instant deepfake detection.
+Developing lightweight audio authentication tools for resource-constrained IoT and mobile devices is critical. This study extracts Mel-Frequency Cepstral Coefficients (MFCCs) alongside delta features.
 
 ### Key Methodology & Architecture
-MFCC extraction, 1st and 2nd derivative deltas, Random Forest classifier, Support Vector Machine (RBF kernel), lightweight feature selection.
+MFCC extraction, 1st and 2nd derivative deltas, Random Forest classifier, Support Vector Machine.
 
 ### Datasets & Benchmarks
 ASVspoof 2019 Physical and Logical Access Datasets.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Random Forest Accuracy = 96.5%, Inference Speed = 2.1ms/sample, CPU RAM Usage < 45MB.
-- **Graph X-Axis:** X-axis: Number of MFCC Coefficients (13, 26, 39, 52 features)
-- **Graph Y-Axis:**  Y-axis: Classification Accuracy (% from 85% to 100%).
+- **Graph Parameter Mapping:** X-axis: Number of MFCC Coefficients (13, 26, 39, 52 features); Y-axis: Classification Accuracy (% from 85% to 100%).
 
 ### Comparative Analysis
 - **Pros:** Ultra-lightweight computational footprint, runs on edge microcontrollers and mobile apps.

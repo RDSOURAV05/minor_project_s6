@@ -9,18 +9,17 @@
 ---
 
 ### Abstract
-Voice biometric authentication systems are increasingly targeted by voice cloning spoof attacks. This letter presents a physical-dynamics inspired feature extraction method that measures vocal fold subglottal pressure variation and vocal tract transfer function boundaries to differentiate organic human speech from AI-synthesized signals.
+Voice biometric authentication systems are increasingly targeted by voice cloning spoof attacks. This letter presents a physical-dynamics inspired feature extraction method that measures vocal fold subglottal pressure variation.
 
 ### Key Methodology & Architecture
-Glottal flow waveform estimation, Linear Predictive Coding (LPC) residual analysis, Bi-LSTM classifier, biometric score fusion.
+Glottal flow waveform estimation, Linear Predictive Coding (LPC) residual analysis, Bi-LSTM classifier.
 
 ### Datasets & Benchmarks
 Logical Access Spoofing Dataset, Telephony Voice Banking Test Set.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Equal Error Rate (EER) = 0.65%, Verification Latency = 8.5ms, Spoof Rejection Rate = 99.35%.
-- **Graph X-Axis:** X-axis: Biometric Threshold Score (-1.0 to 1.0)
-- **Graph Y-Axis:**  Y-axis: False Acceptance Rate (FAR) & False Rejection Rate (FRR).
+- **Graph Parameter Mapping:** X-axis: Biometric Threshold Score (-1.0 to 1.0); Y-axis: False Acceptance Rate (FAR) & False Rejection Rate (FRR).
 
 ### Comparative Analysis
 - **Pros:** Low latency suitable for real-time mobile banking and voice assistant security.

@@ -9,7 +9,7 @@
 ---
 
 ### Abstract
-Unseen zero-day deepfake audio attacks often bypass supervised binary neural networks. This work proposes an unsupervised anomaly detection framework trained exclusively on authentic real audio signals using an Autoencoder-GAN (AE-GAN). Any synthetic audio or tampered watermark exhibits high reconstruction error scores, flagging it as fake.
+Unseen zero-day deepfake audio attacks often bypass supervised binary neural networks. This work proposes an unsupervised anomaly detection framework trained exclusively on authentic real audio signals using an Autoencoder-GAN.
 
 ### Key Methodology & Architecture
 Autoencoder-GAN (AE-GAN), Reconstruction Error Loss, Latent Space Mapping, Anomaly Thresholding.
@@ -19,8 +19,7 @@ VoxCeleb1, AudioSet Pristine Speech Subset, Zero-Day TTS Generators.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Zero-Day Deepfake Detection AUC = 0.945, False Positive Rate (FPR) = 2.4%, Precision = 96.1%.
-- **Graph X-Axis:** X-axis: Anomaly Reconstruction Threshold
-- **Graph Y-Axis:**  Y-axis: True Positive Rate vs False Positive Rate (ROC Curve).
+- **Graph Parameter Mapping:** X-axis: Anomaly Reconstruction Threshold; Y-axis: True Positive Rate vs False Positive Rate (ROC Curve).
 
 ### Comparative Analysis
 - **Pros:** Does not require deepfake training samples; highly robust to unknown zero-day voice clones.

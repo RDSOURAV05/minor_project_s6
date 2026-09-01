@@ -1,4 +1,10 @@
-\documentclass[10pt, aspectratio=169]{beamer}
+import os
+
+WORKSPACE = r"c:\Users\PRO\OneDrive\Documents\GitHub\minor project"
+BEAMER_FILE = os.path.join(WORKSPACE, "Overleaf_Presentation", "beamer_presentation.tex")
+MAIN_FILE = os.path.join(WORKSPACE, "Overleaf_Presentation", "main.tex")
+
+latex_code = r"""\documentclass[10pt, aspectratio=169]{beamer}
 
 % Theme & Color Palette
 \usetheme{Madrid}
@@ -438,16 +444,10 @@ The received audio undergoes DWT-SVD feature extraction. The extracted watermark
 \end{frame}
 
 % SLIDE 15: References & Thank You
-%=====================================================
-% SLIDE 15: References
-%=====================================================
 \section{References}
-\begin{frame}{References}
-  \fontsize{5.5pt}{7pt}\selectfont
-  \setlength{\leftmargini}{1.2em}
+\begin{frame}[allowframebreaks]{References}
+  \tiny
   \begin{enumerate}
-    \setlength{\itemsep}{1.5pt}
-    \setlength{\parskip}{0pt}
     \item S. Kova\v{c}evi\'c et al., ``DeepMark Benchmark: Redefining Audio Watermarking Robustness \textbf{(Base Paper)},'' \textit{IEEE Access}, vol. 14, pp. 62031--62044, 2026.
     \item P. Aberna and L. Agilandeeswari, ``Optimal Semi-Fragile Watermarking Based on Maximum Entropy Random Walk and Swin Transformer for Tamper Localization,'' \textit{IEEE Access}, vol. 12, pp. 37757--37781, 2024.
     \item Y. Sun et al., ``CANARY: Collision-Free Audio Watermarking for Proactive Deepfake Detection,'' \textit{IEEE Trans. Multimedia}, vol. 28, pp. 1420--1435, 2026.
@@ -461,6 +461,19 @@ The received audio undergoes DWT-SVD feature extraction. The extracted watermark
     \item D. Kim et al., ``Anomaly Detection of Deepfake Audio Based on Real Audio Using Generative Adversarial Network Model,'' \textit{IEEE Access}, vol. 12, pp. 152340--152352, 2024.
     \item A. Al-Naji et al., ``Deepfake Audio Detection via MFCC Features Using Machine Learning,'' \textit{IEEE Access}, vol. 10, pp. 132104--132115, 2022.
   \end{enumerate}
+
+  \vfill
+  \centering
+  \Large \textbf{\textcolor{IEEEblue}{Thank You! Questions \& Discussion}}
 \end{frame}
 
 \end{document}
+"""
+
+with open(BEAMER_FILE, "w", encoding="utf-8") as f:
+    f.write(latex_code)
+
+with open(MAIN_FILE, "w", encoding="utf-8") as f:
+    f.write(latex_code)
+
+print("Updated Slide 11 with embedded metrics graph PNG image and adjusted font size!")

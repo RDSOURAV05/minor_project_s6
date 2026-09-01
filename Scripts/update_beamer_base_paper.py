@@ -1,4 +1,10 @@
-\documentclass[10pt, aspectratio=169]{beamer}
+import os
+
+WORKSPACE = r"c:\Users\PRO\OneDrive\Documents\GitHub\minor project"
+BEAMER_FILE = os.path.join(WORKSPACE, "Overleaf_Presentation", "beamer_presentation.tex")
+MAIN_FILE = os.path.join(WORKSPACE, "Overleaf_Presentation", "main.tex")
+
+latex_code = r"""\documentclass[10pt, aspectratio=169]{beamer}
 
 % Theme & Color Palette
 \usetheme{Madrid}
@@ -19,7 +25,6 @@
 
 \usepackage{booktabs}
 \usepackage{multicol}
-\usepackage{graphicx}
 \usepackage{tikz}
 \usetikzlibrary{shapes.geometric, arrows, positioning}
 
@@ -364,30 +369,34 @@ The received audio undergoes DWT-SVD feature extraction. The extracted watermark
   \end{columns}
 \end{frame}
 
-% SLIDE 11: Performance Metrics & Graph Parameters (WITH INTEGRATED IMAGE)
+% SLIDE 11: Performance Metrics & Graph Parameters
 \section{Performance Metrics}
 \begin{frame}{7. Performance Metrics \& Graph X--Y Parameters}
-  \vspace{-1.2ex}
-  \begin{block}{\small Core Evaluation Metrics \& Formulations}
-    \footnotesize
+  \begin{block}{Core Evaluation Metrics}
     \begin{itemize}
-      \item \textbf{Bit Error Rate (BER)}: $BER = \frac{\text{Incorrect Bits}}{\text{Total Watermark Bits}} \times 100\%$ \quad | \quad \textbf{SNR}: Audio imperceptibility in dB ($> 40\text{ dB}$).
-      \item \textbf{Classification Metrics}: Accuracy, Precision, Recall, F1-Score, EER, AUC-ROC ($>0.98$).
+      \item \textbf{Bit Error Rate (BER)}: $BER = \frac{\text{Incorrect Bits}}{\text{Total Watermark Bits}} \times 100\%$
+      \item \textbf{Signal-to-Noise Ratio (SNR)}: Measures audio imperceptibility in dB ($> 40\text{ dB}$ target).
+      \item \textbf{Classification Accuracy, Precision, Recall, F1-Score, EER, AUC-ROC}.
     \end{itemize}
   \end{block}
 
-  \vspace{-0.4ex}
-  \begin{center}
-    \includegraphics[width=0.96\textwidth]{metrics_graph.png}
-  \end{center}
-
-  \vspace{-1.2ex}
-  \begin{block}{\scriptsize Graph Axis Parameter Identifications}
-    \tiny
+  \begin{block}{Graph Axis Parameter Identifications}
     \begin{itemize}
-      \item \textbf{Graph (a) BER vs Noise}: \textbf{X-Axis}: Additive Noise SNR (0--40 dB) \quad | \quad \textbf{Y-Axis}: Bit Error Rate (BER 0\%--50\%).
-      \item \textbf{Graph (b) Accuracy vs Bitrate}: \textbf{X-Axis}: MP3 Bitrate (32--320 kbps) \quad | \quad \textbf{Y-Axis}: Watermark Detection Accuracy (50\%--100\%).
-      \item \textbf{Graph (c) ROC Curve}: \textbf{X-Axis}: False Positive Rate (FPR 0.0--1.0) \quad | \quad \textbf{Y-Axis}: True Positive Rate (TPR 0.0--1.0).
+      \item \textbf{Graph 1 (BER vs Noise Attack)}:
+        \begin{itemize}
+          \item \textbf{X-Axis}: Signal-to-Noise Ratio of Additive Noise (SNR in dB, 0 to 40 dB).
+          \item \textbf{Y-Axis}: Bit Error Rate (BER in \%, 0.0\% to 50.0\%).
+        \end{itemize}
+      \item \textbf{Graph 2 (Detection Accuracy vs Compression Rate)}:
+        \begin{itemize}
+          \item \textbf{X-Axis}: MP3/AAC Bitrate (kbps: 32, 64, 128, 192, 256, 320 kbps).
+          \item \textbf{Y-Axis}: Watermark Detection Accuracy (\%, 50\% to 100\%).
+        \end{itemize}
+      \item \textbf{Graph 3 (ROC Curve for Deepfake Detection)}:
+        \begin{itemize}
+          \item \textbf{X-Axis}: False Positive Rate (FPR, 0.0 to 1.0).
+          \item \textbf{Y-Axis}: True Positive Rate (TPR, 0.0 to 1.0).
+        \end{itemize}
     \end{itemize}
   \end{block}
 \end{frame}
@@ -438,16 +447,10 @@ The received audio undergoes DWT-SVD feature extraction. The extracted watermark
 \end{frame}
 
 % SLIDE 15: References & Thank You
-%=====================================================
-% SLIDE 15: References
-%=====================================================
 \section{References}
-\begin{frame}{References}
-  \fontsize{5.5pt}{7pt}\selectfont
-  \setlength{\leftmargini}{1.2em}
+\begin{frame}[allowframebreaks]{References}
+  \tiny
   \begin{enumerate}
-    \setlength{\itemsep}{1.5pt}
-    \setlength{\parskip}{0pt}
     \item S. Kova\v{c}evi\'c et al., ``DeepMark Benchmark: Redefining Audio Watermarking Robustness \textbf{(Base Paper)},'' \textit{IEEE Access}, vol. 14, pp. 62031--62044, 2026.
     \item P. Aberna and L. Agilandeeswari, ``Optimal Semi-Fragile Watermarking Based on Maximum Entropy Random Walk and Swin Transformer for Tamper Localization,'' \textit{IEEE Access}, vol. 12, pp. 37757--37781, 2024.
     \item Y. Sun et al., ``CANARY: Collision-Free Audio Watermarking for Proactive Deepfake Detection,'' \textit{IEEE Trans. Multimedia}, vol. 28, pp. 1420--1435, 2026.
@@ -461,6 +464,19 @@ The received audio undergoes DWT-SVD feature extraction. The extracted watermark
     \item D. Kim et al., ``Anomaly Detection of Deepfake Audio Based on Real Audio Using Generative Adversarial Network Model,'' \textit{IEEE Access}, vol. 12, pp. 152340--152352, 2024.
     \item A. Al-Naji et al., ``Deepfake Audio Detection via MFCC Features Using Machine Learning,'' \textit{IEEE Access}, vol. 10, pp. 132104--132115, 2022.
   \end{enumerate}
+
+  \vfill
+  \centering
+  \Large \textbf{\textcolor{IEEEblue}{Thank You! Questions \& Discussion}}
 \end{frame}
 
 \end{document}
+"""
+
+with open(BEAMER_FILE, "w", encoding="utf-8") as f:
+    f.write(latex_code)
+
+with open(MAIN_FILE, "w", encoding="utf-8") as f:
+    f.write(latex_code)
+
+print("Updated Beamer presentation with DeepMark Benchmark as Paper 1 (Base Paper)!")

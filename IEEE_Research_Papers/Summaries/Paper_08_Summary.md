@@ -9,18 +9,17 @@
 ---
 
 ### Abstract
-Centralized audio deepfake detection model training raises privacy concerns when user speech recordings are uploaded to central cloud servers. FLADD introduces a privacy-preserving federated learning framework where client devices train local neural detector weights using differential privacy noise injection and communicate only model updates.
+Centralized audio deepfake detection model training raises privacy concerns when user speech recordings are uploaded to central cloud servers. FLADD introduces a privacy-preserving federated learning framework.
 
 ### Key Methodology & Architecture
-Federated Averaging (FedAvg), Differential Privacy (DP-SGD), Light Convolutional Neural Network (LCNN), secure aggregation protocol.
+Federated Averaging (FedAvg), Differential Privacy (DP-SGD), Light Convolutional Neural Network (LCNN).
 
 ### Datasets & Benchmarks
-ASVspoof 2019, LibriSeech, Local Edge Device Testbeds.
+ASVspoof 2019, LibriSpeech, Local Edge Device Testbeds.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Global Model Accuracy = 96.85%, Differential Privacy Epsilon (ε) = 2.1, EER = 1.45%.
-- **Graph X-Axis:** X-axis: Federated Training Rounds (0 to 100 rounds)
-- **Graph Y-Axis:**  Y-axis: Global Model Test Accuracy (% from 50% to 100%).
+- **Graph Parameter Mapping:** X-axis: Federated Training Rounds (0 to 100 rounds); Y-axis: Global Model Test Accuracy (% from 50% to 100%).
 
 ### Comparative Analysis
 - **Pros:** Guarantees user voice privacy while building robust collaborative detection models.

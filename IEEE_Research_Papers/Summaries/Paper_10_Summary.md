@@ -9,18 +9,17 @@
 ---
 
 ### Abstract
-Spectrogram visual representations offer rich time-frequency information for deepfake analysis. This paper conducts a rigorous empirical investigation comparing Log-Mel, MFCC, Constant-Q Transform (CQT), and Gammatone Spectrograms paired with Convolutional Neural Networks (ResNet-50, EfficientNet-B0) to classify authentic vs deepfake speech.
+Spectrogram visual representations offer rich time-frequency information for deepfake analysis. This paper conducts a rigorous empirical investigation comparing Log-Mel, MFCC, and CQT spectrograms.
 
 ### Key Methodology & Architecture
-Time-frequency spectrogram transformation (Log-Mel, CQT, MFCC), ResNet-50, EfficientNet, Transfer Learning, Grad-CAM visual explainability.
+Time-frequency spectrogram transformation (Log-Mel, CQT, MFCC), ResNet-50, EfficientNet, Transfer Learning.
 
 ### Datasets & Benchmarks
 FoR (Fake or Real) Dataset, ASVspoof 2021 LA.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** CQT + EfficientNet Accuracy = 98.42%, F1-Score = 0.984, Precision = 0.986, AUC = 0.995.
-- **Graph X-Axis:** X-axis: Feature Representation (Log-Mel, MFCC, CQT, Gammatone)
-- **Graph Y-Axis:**  Y-axis: Classification Accuracy (% from 80% to 100%).
+- **Graph Parameter Mapping:** X-axis: Feature Representation (Log-Mel, MFCC, CQT); Y-axis: Classification Accuracy (% from 80% to 100%).
 
 ### Comparative Analysis
 - **Pros:** Visual explainability via Grad-CAM highlighting synthetic high-frequency noise.

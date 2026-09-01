@@ -9,7 +9,7 @@
 ---
 
 ### Abstract
-Audio multi-watermarking demands inserting multiple independent payload keys (e.g., copyright ID, timestamp, user signature) simultaneously without degrading audio fidelity. This study introduces RNPM, a neural-guided region selection network that identifies perceptually insensitive regions in audio Short-Time Fourier Transform (STFT) spectrograms, combined with BCH error-correcting codes for resilient extraction.
+Audio multi-watermarking demands inserting multiple independent payload keys simultaneously without degrading audio fidelity. This study introduces RNPM, a neural-guided region selection network that identifies perceptually insensitive regions in audio Short-Time Fourier Transform (STFT) spectrograms, combined with BCH error-correcting codes.
 
 ### Key Methodology & Architecture
 STFT spectrogram analysis, Neural Saliency Masking network, BCH Error-Correcting Code, multi-key orthogonal embedding.
@@ -19,8 +19,7 @@ LJSpeech-1.1, LibriTTS, ESC-50 Environmental Audio.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Payload Capacity = 128 bits/sec, PSNR = 44.8 dB, BER under 15 dB Gaussian noise = 0.02%.
-- **Graph X-Axis:** X-axis: Watermark Capacity (bits per second, 16 to 256 bps)
-- **Graph Y-Axis:**  Y-axis: Perceptual Audio Quality (ODG Score, -4 to 0).
+- **Graph Parameter Mapping:** X-axis: Watermark Capacity (bits per second, 16 to 256 bps); Y-axis: Perceptual Audio Quality (ODG Score, -4 to 0).
 
 ### Comparative Analysis
 - **Pros:** Supports multiple concurrent watermark payloads with low bit error rate.

@@ -9,7 +9,7 @@
 ---
 
 ### Abstract
-To future-proof digital media authentication against quantum computing decryption threats, this article proposes a hybrid system integrating lattice-based post-quantum cryptography (Kyber/Dilithium signatures) with a deep neural audio watermarking scheme. The cryptographic signature is embedded in discrete wavelet subbands, creating tamper-evident digital media distribution chains.
+To future-proof digital media authentication against quantum computing decryption threats, this article proposes a hybrid system integrating lattice-based post-quantum cryptography (Kyber/Dilithium signatures) with a deep neural audio watermarking scheme.
 
 ### Key Methodology & Architecture
 Lattice-based Post-Quantum Cryptography (PQC), DWT-LSB embedding, Deep Binary Neural Network (BNN) detection, SHA3 hash integrity verification.
@@ -19,8 +19,7 @@ VoxCeleb1, CREMA-D, Custom Broadcast News Audio Corpus.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Security Level = 128-bit Post-Quantum, Detection Accuracy = 99.05%, Latency = 12ms per audio second.
-- **Graph X-Axis:** X-axis: Cryptographic Key Length (Bits: 512, 1024, 2048, 4096)
-- **Graph Y-Axis:**  Y-axis: Signature Generation & Embedding Time (ms).
+- **Graph Parameter Mapping:** X-axis: Cryptographic Key Length (Bits: 512, 1024, 2048, 4096); Y-axis: Signature Generation & Embedding Time (ms).
 
 ### Comparative Analysis
 - **Pros:** Quantum-resistant cryptographic integrity verification coupled with AI watermarking.
