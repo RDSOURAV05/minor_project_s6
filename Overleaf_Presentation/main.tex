@@ -1,6 +1,6 @@
 \documentclass[10pt, aspectratio=169]{beamer}
 
-% Theme & Colors
+% Theme & Color Palette
 \usetheme{Madrid}
 \usecolortheme{whale}
 
@@ -35,23 +35,17 @@
 
 \begin{document}
 
-% -------------------------------------------------------
 % SLIDE 1: Title
-% -------------------------------------------------------
 \begin{frame}
   \titlepage
 \end{frame}
 
-% -------------------------------------------------------
-% SLIDE 2: Contents
-% -------------------------------------------------------
+% SLIDE 2: Table of Contents
 \begin{frame}{Presentation Outline}
   \tableofcontents
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 3: Introduction
-% -------------------------------------------------------
 \section{Introduction}
 \begin{frame}{1. Introduction}
   \begin{block}{Background \& Motivation}
@@ -69,52 +63,140 @@
   \end{block}
 \end{frame}
 
-% -------------------------------------------------------
-% SLIDE 4: Literature Survey (Part 1: Table)
-% -------------------------------------------------------
+%=====================================================
+% LITERATURE SURVEY - SLIDE 1
+%=====================================================
 \section{Literature Survey}
-\begin{frame}{2. Literature Survey (IEEE Journal Papers 2020--2026) -- Part 1}
-  \vspace{-1.5ex}
-  \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lllll}
-    \toprule
-    \textbf{\#} & \textbf{Paper Title \& IEEE Journal} & \textbf{Year} & \textbf{Key Methodology} & \textbf{Key Results / Accuracy} \\
-    \midrule
-    1 & CANARY: Collision-Free Watermark (\textit{IEEE TMM}) & 2026 & DCT Orthogonal Embedding + Deep Decoder & BER < 0.05\%, Acc = 98.7\% \\
-    2 & Semi-Fragile Watermarking (\textit{IEEE Access}) & 2024 & DWT-SVD + MERW + Swin Transformer & Tamper Loc. Acc = 99.4\% \\
-    3 & DeepMark Benchmark (\textit{IEEE Access}) & 2026 & Deep Learning Benchmark Testbed & PEAQ ODG = -0.2 to -4.0 \\
-    4 & RNPM: Multi-Watermarking (\textit{IEEE TASLP}) & 2025 & STFT Neural Masking + BCH Codes & Capacity = 128 bps, PSNR = 44.8 dB \\
-    5 & AWaveFormer: Wavelet Transformer (\textit{IEEE TASLP}) & 2025 & Stationary Wavelet Transform + Transformer & EER = 0.82\%, Acc = 99.18\% \\
-    6 & Post-Quantum Crypto Watermark (\textit{IEEE TCSS}) & 2026 & Kyber/Dilithium PQC + DWT-LSB + BNN & Acc = 99.05\%, 128-bit PQC \\
-    \bottomrule
-  \end{tabular}
-  }
+
+\begin{frame}{2. Literature Survey (2024--2026) -- Part I}
+
+\small
+\renewcommand{\arraystretch}{1.6}
+
+\begin{center}
+\begin{tabular}{|c|p{3.3cm}|c|p{3.7cm}|p{2.6cm}|}
+\hline
+\textbf{No.} &
+\textbf{Paper} &
+\textbf{Year} &
+\textbf{Method} &
+\textbf{Result} \\
+\hline
+
+1 &
+DeepMark Benchmark \textbf{(Base Paper)} (IEEE Access) &
+2026 &
+Deep Learning Benchmark Framework &
+PEAQ ODG: -0.2 to -4.0 \\
+\hline
+
+2 &
+Semi-Fragile Watermarking (IEEE Access) &
+2024 &
+DWT-SVD + MERW + Swin Transformer &
+99.4\% Tamper Detection \\
+\hline
+
+3 &
+CANARY (IEEE TMM) &
+2026 &
+DCT Orthogonal Watermark + Deep Decoder &
+98.7\% Accuracy \\
+\hline
+
+4 &
+RNPM Multi-Watermarking (IEEE TASLP) &
+2025 &
+STFT Neural Masking + BCH Codes &
+128 bps Capacity \\
+\hline
+
+5 &
+AWaveFormer (IEEE TASLP) &
+2025 &
+Wavelet Transform + Transformer &
+99.18\% Accuracy \\
+\hline
+
+6 &
+Post-Quantum Watermarking (IEEE TCSS) &
+2026 &
+Kyber/Dilithium + DWT-LSB + BNN &
+99.05\% Accuracy \\
+\hline
+
+\end{tabular}
+\end{center}
+
 \end{frame}
 
-% -------------------------------------------------------
-% SLIDE 5: Literature Survey (Part 2: Table)
-% -------------------------------------------------------
-\begin{frame}{2. Literature Survey (IEEE Journal Papers 2020--2026) -- Part 2}
-  \vspace{-1.5ex}
-  \resizebox{\textwidth}{!}{%
-  \begin{tabular}{lllll}
-    \toprule
-    \textbf{\#} & \textbf{Paper Title \& IEEE Journal} & \textbf{Year} & \textbf{Key Methodology} & \textbf{Key Results / Accuracy} \\
-    \midrule
-    7 & Dual-Channel Detection (\textit{IEEE Access}) & 2025 & Direct vs Reverberant Waveform RIR & Acc = 97.8\%, AUC = 0.992 \\
-    8 & FLADD: Federated Learning (\textit{IEEE TASLP}) & 2026 & FedAvg + Differential Privacy (DP-SGD) & Acc = 96.85\%, EER = 1.45\% \\
-    9 & Audio Physical Dynamics (\textit{IEEE LNET}) & 2026 & Glottal Flow Residual + LPC + Bi-LSTM & EER = 0.65\%, Latency = 8.5ms \\
-    10 & Spectrogram ML Approaches (\textit{IEEE Access}) & 2025 & CQT / Log-Mel + ResNet-50 / EfficientNet & Acc = 98.42\%, F1 = 0.984 \\
-    11 & GAN Anomaly Detection (\textit{IEEE Access}) & 2024 & Autoencoder-GAN (AE-GAN) Zero-Day & Zero-Day AUC = 0.945 \\
-    12 & MFCC Features ML Detection (\textit{IEEE Access}) & 2022 & MFCC Deltas + Random Forest / SVM & Acc = 96.5\%, Speed = 2.1ms \\
-    \bottomrule
-  \end{tabular}
-  }
+%=====================================================
+% LITERATURE SURVEY - SLIDE 2
+%=====================================================
+
+\begin{frame}{2. Literature Survey (2022--2026) -- Part II}
+
+\small
+\renewcommand{\arraystretch}{1.6}
+
+\begin{center}
+\begin{tabular}{|c|p{3.3cm}|c|p{3.7cm}|p{2.6cm}|}
+\hline
+\textbf{No.} &
+\textbf{Paper} &
+\textbf{Year} &
+\textbf{Method} &
+\textbf{Result} \\
+\hline
+
+7 &
+Dual-Channel Detection (IEEE Access) &
+2025 &
+RIR-Based Direct/Reverberant Analysis &
+97.8\% Accuracy \\
+\hline
+
+8 &
+FLADD Federated Learning (IEEE TASLP) &
+2026 &
+FedAvg + Differential Privacy &
+96.85\% Accuracy \\
+\hline
+
+9 &
+Audio Physical Dynamics (IEEE LNET) &
+2026 &
+Glottal Residual + LPC + Bi-LSTM &
+0.65\% EER \\
+\hline
+
+10 &
+Spectrogram ML Detection (IEEE Access) &
+2025 &
+Log-Mel / CQT + ResNet50 &
+98.42\% Accuracy \\
+\hline
+
+11 &
+GAN Anomaly Detection (IEEE Access) &
+2024 &
+Autoencoder-GAN &
+AUC = 0.945 \\
+\hline
+
+12 &
+MFCC ML Detection (IEEE Access) &
+2022 &
+MFCC + RF / SVM &
+96.5\% Accuracy \\
+\hline
+
+\end{tabular}
+\end{center}
+
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 6: Problem Statement
-% -------------------------------------------------------
 \section{Problem Statement}
 \begin{frame}{3. Problem Statement}
   \begin{block}{Formal Problem Definition}
@@ -130,9 +212,7 @@
   \end{alertblock}
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 7: Objective
-% -------------------------------------------------------
 \section{Objective}
 \begin{frame}{4. Project Objectives}
   \begin{enumerate}
@@ -144,40 +224,82 @@
   \end{enumerate}
 \end{frame}
 
-% -------------------------------------------------------
-% SLIDE 8: System Design - Architecture
-% -------------------------------------------------------
+% SLIDE 8: System Architecture
 \section{Design of Project}
-\begin{frame}{5. System Architecture \& Design}
-  \begin{center}
-    \resizebox{0.95\textwidth}{!}{%
-    \begin{tikzpicture}[node distance=1.8cm, auto]
-      \tikzstyle{block} = [rectangle, draw, fill=IEEEblue!20, text centered, rounded corners, minimum height=2.5em, minimum width=3cm]
-      \tikzstyle{line} = [draw, -latex', thick]
-      
-      \node [block] (input) {Input Audio Signal ($s(t)$)};
-      \node [block, right of=input, node distance=3.5cm] (pre) {Preprocessing \& DWT Frame Split};
-      \node [block, right of=pre, node distance=3.5cm] (feat) {Feature Extraction (DWT-SVD / STFT)};
-      \node [block, right of=feat, node distance=3.5cm] (ai) {AI Watermark Detector (BNN / Swin)};
-      \node [block, right of=ai, node distance=3.5cm] (out) {Authenticity \& Tamper Decision};
-      
-      \path [line] (input) -- (pre);
-      \path [line] (pre) -- (feat);
-      \path [line] (feat) -- (ai);
-      \path [line] (ai) -- (out);
-    \end{tikzpicture}
-    }
-  \end{center}
-  \vspace{1em}
-  \begin{itemize}
-    \item \textbf{Watermark Embedding}: Preprocessing $\rightarrow$ DWT 3-level decomposition $\rightarrow$ SVD modification in LL/LH subbands $\rightarrow$ Inverse DWT reconstructs watermarked audio $s_w(t)$.
-    \item \textbf{Watermark Detection}: Test Audio $\rightarrow$ DWT-SVD extraction $\rightarrow$ BNN Classifier $\rightarrow$ Binary Decision (Authentic / Tampered / Deepfake).
-  \end{itemize}
+
+\begin{frame}{5. System Architecture}
+
+\begin{center}
+\resizebox{\textwidth}{!}{
+\begin{tikzpicture}[
+    node distance=2.2cm,
+    block/.style={rectangle, draw, rounded corners, fill=blue!15,
+    minimum width=3.5cm, minimum height=1cm, align=center},
+    arrow/.style={->, thick}
+]
+
+% ---------------- EMBEDDING ----------------
+\node[block, fill=green!20] (audio) {Original Audio\\$s(t)$};
+
+\node[block, right=of audio] (dwt1)
+{3-Level DWT\\Decomposition};
+
+\node[block, right=of dwt1] (svd1)
+{SVD-Based\\Watermark Embedding};
+
+\node[block, right=of svd1] (idwt)
+{Inverse DWT\\Reconstruction};
+
+\node[block, right=of idwt, fill=green!20]
+(waudio) {Watermarked Audio\\$s_w(t)$};
+
+\draw[arrow] (audio)--(dwt1);
+\draw[arrow] (dwt1)--(svd1);
+\draw[arrow] (svd1)--(idwt);
+\draw[arrow] (idwt)--(waudio);
+
+% Label
+\node[above=0.5cm of svd1, text=green!60!black]
+{\Large \textbf{Watermark Embedding Phase}};
+
+% ---------------- DETECTION ----------------
+\node[block, fill=orange!20, below=2.5cm of dwt1]
+(test) {Received/Test Audio};
+
+\node[block, right=of test]
+(dwt2) {DWT-SVD\\Feature Extraction};
+
+\node[block, right=of dwt2]
+(ai) {AI Detector\\(BNN / Swin Transformer)};
+
+\node[block, right=of ai, fill=orange!20]
+(decision) {Decision\\Authentic / Tampered\\Deepfake};
+
+\draw[arrow] (test)--(dwt2);
+\draw[arrow] (dwt2)--(ai);
+\draw[arrow] (ai)--(decision);
+
+% Label
+\node[above=0.5cm of ai, text=orange!80!black]
+{\Large \textbf{Watermark Detection Phase}};
+
+\end{tikzpicture}
+}
+\end{center}
+
+\vspace{0.3cm}
+
+\textbf{Embedding:}
+Original audio is decomposed using a 3-level DWT. The watermark is embedded by modifying singular values in selected subbands, and the watermarked audio is reconstructed using IDWT.
+
+\vspace{0.2cm}
+
+\textbf{Detection:}
+The received audio undergoes DWT-SVD feature extraction. The extracted watermark features are analyzed by a Bayesian Neural Network (BNN) or Swin Transformer to determine whether the audio is authentic, tampered, or AI-generated.
+
 \end{frame}
 
-% -------------------------------------------------------
-% SLIDE 9: System Design - Watermarking Pipeline
-% -------------------------------------------------------
+% SLIDE 9: Methodology Breakdown
 \begin{frame}{5. Methodology Breakdown (Embedding \& Detection)}
   \begin{columns}
     \column{0.5\textwidth}
@@ -202,9 +324,7 @@
   \end{columns}
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 10: Tools Required
-% -------------------------------------------------------
 \section{Tools Required}
 \begin{frame}{6. Tools \& Technologies Required}
   \begin{columns}
@@ -243,9 +363,7 @@
   \end{columns}
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 11: Performance Metrics & Graph Parameters
-% -------------------------------------------------------
 \section{Performance Metrics}
 \begin{frame}{7. Performance Metrics \& Graph X--Y Parameters}
   \begin{block}{Core Evaluation Metrics}
@@ -277,9 +395,7 @@
   \end{block}
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 12: Expected Outcomes
-% -------------------------------------------------------
 \section{Expected Outcomes}
 \begin{frame}{8. Expected Outcomes \& Deliverables}
   \begin{block}{Expected Outcomes}
@@ -301,23 +417,19 @@
   \end{block}
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 13: Project Roadmap
-% -------------------------------------------------------
 \begin{frame}{Implementation Roadmap}
   \begin{block}{Phase-Wise Development Plan}
     \begin{itemize}
-      \item \textbf{Phase 1 (Months 1--2)}: Comprehensive IEEE literature review, dataset aggregation (ASVspoof 2021, LibriSpeech), and baseline DWT-SVD setup.
-      \item \textbf{Phase 2 (Months 3--4)}: Implementation of neural watermark embedding, perceptual masking, and Binary Neural Network (BNN) architecture.
-      \item \textbf{Phase 3 (Months 5--6)}: Adversarial attack evaluation (MP3 compression, pitch shift, noise injection, voice cloning) and hyperparameter tuning.
-      \item \textbf{Phase 4 (Months 7--8)}: UI prototype integration, final benchmark reporting, and paper preparation.
+      \item \textbf{Phase 1}: Comprehensive IEEE literature review, dataset aggregation (ASVspoof 2021, LibriSpeech), and baseline DWT-SVD setup.
+      \item \textbf{Phase 2}: Implementation of neural watermark embedding, perceptual masking, and Binary Neural Network (BNN) architecture.
+      \item \textbf{Phase 3}: Adversarial attack evaluation (MP3 compression, pitch shift, noise injection, voice cloning) and hyperparameter tuning.
+      \item \textbf{Phase 4}: UI prototype integration, final benchmark reporting, and paper preparation.
     \end{itemize}
   \end{block}
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 14: Sustainable Development Goals (SDGs)
-% -------------------------------------------------------
 \begin{frame}{Related Sustainable Development Goals (SDGs)}
   \begin{block}{Alignment with United Nations SDGs}
     \begin{itemize}
@@ -328,16 +440,14 @@
   \end{block}
 \end{frame}
 
-% -------------------------------------------------------
 % SLIDE 15: References & Thank You
-% -------------------------------------------------------
 \section{References}
 \begin{frame}[allowframebreaks]{References}
   \tiny
   \begin{enumerate}
-    \item Y. Sun et al., ``CANARY: Collision-Free Audio Watermarking for Proactive Deepfake Detection,'' \textit{IEEE Trans. Multimedia}, vol. 28, pp. 1420--1435, 2026.
+    \item S. Kova\v{c}evi\'c et al., ``DeepMark Benchmark: Redefining Audio Watermarking Robustness \textbf{(Base Paper)},'' \textit{IEEE Access}, vol. 14, pp. 62031--62044, 2026.
     \item P. Aberna and L. Agilandeeswari, ``Optimal Semi-Fragile Watermarking Based on Maximum Entropy Random Walk and Swin Transformer for Tamper Localization,'' \textit{IEEE Access}, vol. 12, pp. 37757--37781, 2024.
-    \item S. Kova\v{c}evi\'c et al., ``DeepMark Benchmark: Redefining Audio Watermarking Robustness,'' \textit{IEEE Access}, vol. 14, pp. 62031--62044, 2026.
+    \item Y. Sun et al., ``CANARY: Collision-Free Audio Watermarking for Proactive Deepfake Detection,'' \textit{IEEE Trans. Multimedia}, vol. 28, pp. 1420--1435, 2026.
     \item H. Chen et al., ``RNPM: Neural-Guided Embedding Region Selection and Error Correction for Robust Audio Multi-Watermarking,'' \textit{IEEE Trans. Audio, Speech, Lang. Process.}, vol. 33, pp. 1120--1134, 2025.
     \item Z. Wu et al., ``AWaveFormer: Audio Wavelet Transformer Network for Generalized Audio Deepfake Detection,'' \textit{IEEE Trans. Audio, Speech, Lang. Process.}, vol. 33, pp. 450--465, 2025.
     \item K. Sharma et al., ``Fortifying Deepfake Detection With AI and Postquantum Cryptography-Based Watermarking Technique,'' \textit{IEEE Trans. Comput. Soc. Syst.}, vol. 13, pp. 890--904, 2026.

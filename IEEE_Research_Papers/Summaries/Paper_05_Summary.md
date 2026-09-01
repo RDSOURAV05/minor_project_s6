@@ -19,8 +19,7 @@ ASVspoof 2019 LA/DF, WaveFake, In-the-Wild Deepfake Audio Dataset.
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Equal Error Rate (EER) = 0.82%, Tandem Detection Cost Function (t-DCF) = 0.024, Accuracy = 99.18%.
-- **Graph X-Axis:** X-axis: False Alarm Rate (FAR in %, 0% to 10%)
-- **Graph Y-Axis:**  Y-axis: Miss Detection Rate (MDR in %, 0% to 10%) [ROC Curve].
+- **Graph Parameter Mapping:** X-axis: False Alarm Rate (FAR in %, 0% to 10%); Y-axis: Miss Detection Rate (MDR in %, 0% to 10%) [ROC Curve].
 
 ### Comparative Analysis
 - **Pros:** Exceptional cross-dataset generalization across unseen text-to-speech (TTS) engines.

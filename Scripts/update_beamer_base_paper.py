@@ -1,4 +1,10 @@
-\documentclass[10pt, aspectratio=169]{beamer}
+import os
+
+WORKSPACE = r"c:\Users\PRO\OneDrive\Documents\GitHub\minor project"
+BEAMER_FILE = os.path.join(WORKSPACE, "Overleaf_Presentation", "beamer_presentation.tex")
+MAIN_FILE = os.path.join(WORKSPACE, "Overleaf_Presentation", "main.tex")
+
+latex_code = r"""\documentclass[10pt, aspectratio=169]{beamer}
 
 % Theme & Color Palette
 \usetheme{Madrid}
@@ -465,3 +471,12 @@ The received audio undergoes DWT-SVD feature extraction. The extracted watermark
 \end{frame}
 
 \end{document}
+"""
+
+with open(BEAMER_FILE, "w", encoding="utf-8") as f:
+    f.write(latex_code)
+
+with open(MAIN_FILE, "w", encoding="utf-8") as f:
+    f.write(latex_code)
+
+print("Updated Beamer presentation with DeepMark Benchmark as Paper 1 (Base Paper)!")

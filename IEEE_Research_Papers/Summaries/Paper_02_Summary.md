@@ -19,8 +19,7 @@ TIMIT Acoustic-Phonetic Continuous Speech Corpus, Free Music Archive (FMA).
 
 ### Performance Metrics & Experimental Results
 - **Reported Results:** Tamper Localization Accuracy = 99.4%, Precision = 99.1%, Recall = 99.6%, Normalized Cross-Correlation (NC) = 0.998.
-- **Graph X-Axis:** X-axis: Tampering Ratio (% of audio altered, 0% to 50%)
-- **Graph Y-Axis:**  Y-axis: Tamper Localization Precision & Recall (0.0 to 1.0).
+- **Graph Parameter Mapping:** X-axis: Tampering Ratio (% of audio altered, 0% to 50%); Y-axis: Tamper Localization Precision & Recall (0.0 to 1.0).
 
 ### Comparative Analysis
 - **Pros:** Extremely fine millisecond-level tamper localization, high fidelity preservation.
