@@ -46,7 +46,7 @@ from pipeline.plot_empirical_results import EmpiricalResultsPlotter
 
 
 # -----------------------------------------------------------------------------
-# Streamlit Configuration & Professional Styling
+# Streamlit Configuration & Professional Styling (Dark & Light Theme Adaptive)
 # -----------------------------------------------------------------------------
 st.set_page_config(
     page_title="Audio Watermarking & AI Detection System",
@@ -56,88 +56,75 @@ st.set_page_config(
 
 st.markdown("""
 <style>
-    /* Professional typography and neutral surfaces */
+    /* Clean, theme-adaptive typography and components */
     body, [class*="css"] {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
     .app-title {
         font-size: 1.85rem;
         font-weight: 700;
-        color: #0F172A;
         letter-spacing: -0.02em;
         margin-bottom: 0.15rem;
+        color: inherit;
     }
     .app-subtitle {
         font-size: 0.95rem;
-        color: #475569;
+        opacity: 0.8;
         margin-bottom: 1.25rem;
         padding-bottom: 0.75rem;
-        border-bottom: 1px solid #E2E8F0;
+        border-bottom: 1px solid rgba(128, 128, 128, 0.2);
     }
     .section-header {
         font-size: 1.15rem;
         font-weight: 600;
-        color: #1E293B;
         margin-top: 0.5rem;
         margin-bottom: 0.75rem;
-    }
-    .metric-container {
-        background-color: #F8FAFC;
-        border: 1px solid #E2E8F0;
-        border-radius: 6px;
-        padding: 12px 16px;
-        margin-bottom: 8px;
-    }
-    .metric-label {
-        font-size: 0.8rem;
-        font-weight: 600;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-        color: #64748B;
-    }
-    .metric-value {
-        font-size: 1.35rem;
-        font-weight: 700;
-        color: #0F172A;
-        margin-top: 2px;
+        color: inherit;
     }
     .verdict-box {
         border-radius: 6px;
         padding: 14px 18px;
         margin-bottom: 16px;
-        border: 1px solid transparent;
     }
     .verdict-authentic {
-        background-color: #ECFDF5;
-        border-color: #A7F3D0;
-        color: #065F46;
+        background-color: rgba(16, 185, 129, 0.12);
+        border-left: 4px solid #10B981;
+        border: 1px solid rgba(16, 185, 129, 0.3);
+        border-left-width: 4px;
+        color: inherit;
     }
     .verdict-tampered {
-        background-color: #FFFBEB;
-        border-color: #FDE68A;
-        color: #92400E;
+        background-color: rgba(245, 158, 11, 0.12);
+        border-left: 4px solid #F59E0B;
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-left-width: 4px;
+        color: inherit;
     }
     .verdict-fake {
-        background-color: #FEF2F2;
-        border-color: #FECACA;
-        color: #991B1B;
+        background-color: rgba(239, 68, 68, 0.12);
+        border-left: 4px solid #EF4444;
+        border: 1px solid rgba(239, 68, 68, 0.3);
+        border-left-width: 4px;
+        color: inherit;
     }
     .verdict-title {
-        font-size: 1.1rem;
+        font-size: 1.05rem;
         font-weight: 700;
         margin-bottom: 3px;
+        letter-spacing: 0.02em;
     }
     .verdict-desc {
         font-size: 0.85rem;
         opacity: 0.9;
+        line-height: 1.4;
     }
     .bit-chip-match {
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
+        width: 21px;
+        height: 21px;
+        line-height: 21px;
         text-align: center;
-        margin: 1.5px;
+        margin: 2px;
         background-color: #10B981;
         color: #FFFFFF;
         font-family: monospace;
@@ -147,11 +134,11 @@ st.markdown("""
     }
     .bit-chip-error {
         display: inline-block;
-        width: 20px;
-        height: 20px;
-        line-height: 20px;
+        width: 21px;
+        height: 21px;
+        line-height: 21px;
         text-align: center;
-        margin: 1.5px;
+        margin: 2px;
         background-color: #EF4444;
         color: #FFFFFF;
         font-family: monospace;
@@ -174,7 +161,7 @@ def signal_to_wav_bytes(signal, sr=16000):
 
 
 def plot_signals(signal_dict, sr):
-    """Render a clean multi-signal waveform comparison plot."""
+    """Render a clean multi-signal waveform comparison plot compatible with light/dark themes."""
     num_plots = len(signal_dict)
     fig, axes = plt.subplots(num_plots, 1, figsize=(10, 1.8 * num_plots), dpi=140, sharex=True)
     if num_plots == 1:
@@ -182,15 +169,24 @@ def plot_signals(signal_dict, sr):
 
     time_axis = np.linspace(0, len(list(signal_dict.values())[0]) / sr, len(list(signal_dict.values())[0]))
 
+    # Set transparent figure background
+    fig.patch.set_alpha(0.0)
+
     for ax, (name, sig) in zip(axes, signal_dict.items()):
+        ax.set_facecolor('none')
         color = "#0284C7" if "Original" in name else ("#059669" if "Watermarked" in name else "#DC2626")
         ax.plot(time_axis, sig, color=color, linewidth=0.75)
-        ax.set_title(name, fontsize=9.5, fontweight='bold', pad=4, loc='left')
-        ax.set_ylabel("Amplitude", fontsize=8)
+        ax.set_title(name, fontsize=9.5, fontweight='bold', pad=4, loc='left', color='#0284C7' if "Original" in name else ("#059669" if "Watermarked" in name else "#DC2626"))
+        ax.set_ylabel("Amplitude", fontsize=8, color='#888888')
         ax.set_ylim(-1.05, 1.05)
-        ax.grid(True, linestyle='--', alpha=0.4)
+        ax.tick_params(colors='#888888', labelsize=8)
+        ax.grid(True, linestyle='--', alpha=0.3, color='#888888')
+        ax.spines['top'].set_visible(False)
+        ax.spines['right'].set_visible(False)
+        ax.spines['left'].set_color('#888888')
+        ax.spines['bottom'].set_color('#888888')
 
-    axes[-1].set_xlabel("Time (seconds)", fontsize=8.5)
+    axes[-1].set_xlabel("Time (seconds)", fontsize=8.5, color='#888888')
     plt.tight_layout()
     return fig
 
@@ -198,7 +194,6 @@ def plot_signals(signal_dict, sr):
 # -----------------------------------------------------------------------------
 # Session State Initialization
 # -----------------------------------------------------------------------------
-# Load default sample if no audio loaded yet
 if 'clean_audio' not in st.session_state:
     sample_path = "samples/clean_speech_sample1.wav"
     if os.path.exists(sample_path):
@@ -351,15 +346,18 @@ with tab1:
             seg_snr = calculate_seg_snr(st.session_state.clean_audio, st.session_state.watermarked_audio)
             lsd = calculate_lsd(st.session_state.clean_audio, st.session_state.watermarked_audio)
 
-            m1, m2, m3, m4 = st.columns(4)
-            with m1:
-                st.markdown(f'<div class="metric-container"><div class="metric-label">Global SNR</div><div class="metric-value">{snr:.2f} dB</div></div>', unsafe_allow_html=True)
-            with m2:
-                st.markdown(f'<div class="metric-container"><div class="metric-label">PSNR</div><div class="metric-value">{psnr:.2f} dB</div></div>', unsafe_allow_html=True)
-            with m3:
-                st.markdown(f'<div class="metric-container"><div class="metric-label">Segmental SNR</div><div class="metric-value">{seg_snr:.2f} dB</div></div>', unsafe_allow_html=True)
-            with m4:
-                st.markdown(f'<div class="metric-container"><div class="metric-label">Log-Spectral Dist</div><div class="metric-value">{lsd:.4f} dB</div></div>', unsafe_allow_html=True)
+            # Clean 2x2 metric layout that never wraps text horizontally
+            r1_c1, r1_c2 = st.columns(2)
+            with r1_c1:
+                st.metric("Global SNR", f"{snr:.2f} dB", delta="Imperceptible" if snr > 35 else "Acceptable")
+            with r1_c2:
+                st.metric("Peak SNR (PSNR)", f"{psnr:.2f} dB")
+
+            r2_c1, r2_c2 = st.columns(2)
+            with r2_c1:
+                st.metric("Segmental SNR", f"{seg_snr:.2f} dB")
+            with r2_c2:
+                st.metric("Log-Spectral Dist", f"{lsd:.4f} dB")
 
     if st.session_state.watermarked_audio is not None:
         st.markdown("---")
@@ -482,15 +480,15 @@ with tab2:
 
                 r1, r2, r3 = st.columns(3)
                 with r1:
-                    st.markdown(f'<div class="metric-container"><div class="metric-label">Bit Error Rate</div><div class="metric-value">{ber:.4f}</div></div>', unsafe_allow_html=True)
+                    st.metric("Bit Error Rate", f"{ber:.4f}", delta="Low Error" if ber < 0.15 else "High Error", delta_color="inverse")
                 with r2:
-                    st.markdown(f'<div class="metric-container"><div class="metric-label">Recovery Accuracy</div><div class="metric-value">{bit_acc:.1f}%</div></div>', unsafe_allow_html=True)
+                    st.metric("Recovery Accuracy", f"{bit_acc:.1f}%")
                 with r3:
-                    st.markdown(f'<div class="metric-container"><div class="metric-label">Correlation (NCC)</div><div class="metric-value">{ncc:.4f}</div></div>', unsafe_allow_html=True)
+                    st.metric("Correlation (NCC)", f"{ncc:.4f}")
 
                 st.markdown("##### Bit Comparison Map")
                 st.caption("Green: Bit Matched | Red: Bit Inverted / Corrupted")
-                chips_html = '<div style="background-color: #F8FAFC; border: 1px solid #E2E8F0; border-radius: 6px; padding: 8px;">'
+                chips_html = '<div style="background-color: rgba(128, 128, 128, 0.08); border: 1px solid rgba(128, 128, 128, 0.2); border-radius: 6px; padding: 12px; line-height: 1.8;">'
                 for idx, (exp, ext) in enumerate(zip(orig_wm, extracted)):
                     if exp == ext:
                         chips_html += f'<span class="bit-chip-match" title="Bit {idx}: Match ({exp})">{ext}</span>'
@@ -574,7 +572,7 @@ with tab3:
                 # Run detector
                 result = detector.verify_authenticity(target_signal, expected_key, meta_dict)
 
-                # Format verdict banner
+                # Format verdict banner with dark-mode safe styling
                 if result.label == "AUTHENTIC_WATERMARKED":
                     st.markdown(f"""
                     <div class="verdict-box verdict-authentic">
@@ -599,11 +597,11 @@ with tab3:
 
                 c1, c2, c3 = st.columns(3)
                 with c1:
-                    st.markdown(f'<div class="metric-container"><div class="metric-label">Confidence Score</div><div class="metric-value">{result.confidence_score*100:.1f}%</div></div>', unsafe_allow_html=True)
+                    st.metric("Confidence Score", f"{result.confidence_score*100:.1f}%")
                 with c2:
-                    st.markdown(f'<div class="metric-container"><div class="metric-label">Bit Error Rate (BER)</div><div class="metric-value">{result.ber:.4f}</div></div>', unsafe_allow_html=True)
+                    st.metric("Bit Error Rate (BER)", f"{result.ber:.4f}")
                 with c3:
-                    st.markdown(f'<div class="metric-container"><div class="metric-label">Normalized Correlation</div><div class="metric-value">{result.ncc:.4f}</div></div>', unsafe_allow_html=True)
+                    st.metric("Correlation (NCC)", f"{result.ncc:.4f}")
 
                 st.markdown("##### Detection Threshold Reference")
                 st.caption(f"Authentic Threshold: BER ≤ {detector.ber_authentic_th:.2f} | Tampered Boundary: BER ≤ {detector.ber_tampered_th:.2f} | Deepfake / Random Noise: BER ≈ 0.50")
@@ -643,11 +641,11 @@ with tab4:
             det_metrics = benchmark_data.get('detection_performance', {})
             k1, k2, k3 = st.columns(3)
             with k1:
-                st.markdown(f'<div class="metric-container"><div class="metric-label">Detection ROC-AUC</div><div class="metric-value">{det_metrics.get("auc", 0.917):.4f}</div></div>', unsafe_allow_html=True)
+                st.metric("Detection ROC-AUC", f"{det_metrics.get('auc', 0.917):.4f}")
             with k2:
-                st.markdown(f'<div class="metric-container"><div class="metric-label">Equal Error Rate (EER)</div><div class="metric-value">{det_metrics.get("eer", 0.1429)*100:.2f}%</div></div>', unsafe_allow_html=True)
+                st.metric("Equal Error Rate (EER)", f"{det_metrics.get('eer', 0.1429)*100:.2f}%")
             with k3:
-                st.markdown(f'<div class="metric-container"><div class="metric-label">Evaluated Clips</div><div class="metric-value">{det_metrics.get("total_evaluated", 140)}</div></div>', unsafe_allow_html=True)
+                st.metric("Evaluated Audio Clips", f"{det_metrics.get('total_evaluated', 140)}")
 
     st.markdown("---")
     st.markdown("##### Empirical Performance Figures")
