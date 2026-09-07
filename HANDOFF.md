@@ -1,155 +1,122 @@
 # Minor Project S6 — Handoff Document
 
 > **Topic**: Audio Watermarking using DWT-SVD for AI-Generated Audio Detection  
+> **Base Paper**: *DeepMark Benchmark: Redefining Audio Watermarking Robustness* (IEEE Access 2026)  
 > **Branch**: `main`  
-> **Last Updated**: September 2, 2026
+> **Last Updated**: September 2026  
 
 ---
 
-## What Has Been Done
+## 1. What Has Been Done
 
 ### Phase 1 — Research & Literature Survey (Complete)
 - Collected and organized **12 IEEE research papers** on audio watermarking, deepfake detection, and DWT-SVD methods.
-- Summarized all papers into `Documentation/IEEE_Papers_Summary.docx`.
-- Created an **Overleaf LaTeX presentation** (`Overleaf_Presentation/`) covering problem statement, related work, and proposed approach.
-- Automated paper scraping/fetching scripts in `Scripts/`.
+- Summarized all papers into `Documentation/IEEE_Papers_Summary.docx` and `IEEE_Research_Papers/Summaries/`.
+- Created an **Overleaf LaTeX presentation** (`Overleaf_Presentation/`) and `First_Review/` folder covering problem statement, related work, and baseline comparisons.
+- Established **DeepMark Benchmark (IEEE Access 2026)** as Paper #1 Base Paper.
 
-### Phase 2 — Core Implementation (In Progress)
+### Phase 2 — Core Implementation & Benchmark Framework (Complete)
 
-| Module | File | Status | What It Does |
-|--------|------|--------|--------------|
-| **Embedding** | `src/embedding/dwt_svd.py` | Done | Embeds + extracts binary watermarks using 3-level DWT + SVD |
-| **Evaluation** | `src/evaluation/metrics.py` | Done | SNR, PSNR, BER, NCC metric calculations |
-| **Data** | `src/data/dataset_manager.py` | Done | Downloads LibriSpeech; placeholder for ASVspoof 2021 |
-| **Detection** | `src/detection/` | TODO | Deepfake detection pipeline (not yet implemented) |
-
----
-
-## How the Algorithm Works
-
-```
-Original Audio --> 3-Level DWT --> LL Sub-band (cA3)
-                                         |
-                                   Reshape to 2D Matrix
-                                         |
-                                   SVD: U, S, Vt
-                                         |
-                         Embed: S' = S + alpha * watermark_bits
-                                         |
-                        Reconstruct: cA3' = U . diag(S') . Vt
-                                         |
-                          IDWT --> Watermarked Audio
-```
-
-**Extraction** (non-blind, requires original singular values S):
-```
-watermark_bits = sign( (S'_extracted - S_original) / alpha )
-```
-
-**Quality Metrics:**
-- **SNR / PSNR** — measures audio quality degradation (higher = better)
-- **BER** — Bit Error Rate of extracted watermark (lower = better, 0 = perfect)
-- **NCC** — Normalized Cross-Correlation (closer to 1 = better)
+| Module | Location | Status | What It Does |
+|--------|----------|--------|--------------|
+| **Embedding** | `implementation/src/embedding/dwt_svd.py` | Complete | 3-Level DWT + SVD watermarking; supports In-Memory signals, Orthonormal Projection (0% clean BER), QIM (Semi-Blind), and Block-Based Tamper Localization |
+| **Evaluation** | `implementation/src/evaluation/metrics.py` | Complete | Fidelity (SNR, PSNR, SegSNR, LSD), Watermark Recovery (BER, NCC, Bit Accuracy), and Detection (ROC, AUC, EER, Confusion Matrix) |
+| **Attacks** | `implementation/src/attacks/audio_attacks.py` | Complete | DeepMark-aligned suite: AWGN noise (0–40 dB), Lowpass/Highpass/Bandpass filters, Resampling (8 kHz), Amplitude scaling, Cropping, MP3 compression simulation, AI Vocoder re-synthesis |
+| **Data** | `implementation/src/data/dataset_manager.py` | Complete | Formant synthetic speech synthesis (standalone testing), test dataset generation, and audio loader utilities |
+| **Detection** | `implementation/src/detection/detector.py` | Complete | `WatermarkIntegrityDetector` (confidence scoring, authenticity verdict, tamper localization) and `AudioAuthenticityClassifier` (supervised ML feature classifier) |
+| **Pipeline & CLI** | `implementation/src/pipeline/` & `run_pipeline.py` | Complete | End-to-end benchmark execution, publication-grade graph generation, and single-command demo runner |
+| **Automated Tests**| `tests/` | Complete | 15 comprehensive unit & integration tests covering watermarking, attacks, detection, and metrics |
 
 ---
 
-## Project Structure
+## 2. System Architecture & Methodology
 
 ```
-minor_project_s6/
-├── Documentation/
-│   └── IEEE_Papers_Summary.docx     # Literature survey summary
-├── IEEE_Research_Papers/            # 12 reference papers
-├── Overleaf_Presentation/           # LaTeX slides for presentation
-├── Scripts/                         # Paper fetching/automation scripts
-├── pyproject.toml                   # uv project/dependency config
-├── uv.lock                          # uv lockfile
-├── implementation/
-│   └── src/
-│       ├── embedding/
-│       │   └── dwt_svd.py           # Core algorithm (DWT-SVD)
-│       └── evaluation/
-│           └── metrics.py           # SNR, PSNR, BER, NCC
-├── .gitignore
-└── HANDOFF.md                       # This file
+Original Audio ---> 3-Level DWT ---> LL Sub-band (cA3)
+                                            |
+                                     Reshape to Matrix
+                                            |
+                                      SVD: U, S, Vt
+                                            |
+                           Embed: S' = S + alpha * watermark_bits
+                                            |
+                         Reconstruct: cA3' = U . diag(S') . Vt
+                                            |
+                            IDWT ---> Watermarked Audio
+                                            |
+       +------------------------------------+------------------------------------+
+       |                                                                         |
+[Transmission / Attacks]                                                [Receiver & Detector]
+(AWGN, MP3, Filters, Cropping)                                          Extract Watermark
+       |                                                                         |
+       +----------------------------> Verify Integrity <------------------------+
+                                            |
+                       +--------------------+--------------------+
+                       |                                         |
+             Confidence >= 85%                        Confidence < 30%
+           [AUTHENTIC WATERMARKED]               [AI-GENERATED / SPOOFED]
 ```
+
+### Orthonormal Projection Extraction (Zero-Error Non-Blind):
+$$S_{\text{proj}} = \text{diag}(U^T \cdot A' \cdot V)$$
+$$\text{Watermark Bits} = \text{sign}\left(\frac{S_{\text{proj}} - S}{\alpha}\right)$$
+*Eliminates singular value sorting/permutation errors inherent in textbook SVD reconstruction.*
 
 ---
 
-## How to Run / Demo for Teachers
+## 3. How to Run / Demo for Teachers & Reviews
 
 ### 1. Setup Environment
 ```powershell
-# From project root
+# Sync local virtual environment using uv
 uv sync
-# For Script utilities as well:
-uv sync --extra scripts
 ```
 
-### 2. Embed & Extract a Watermark
-```python
-import numpy as np
-import sys
-sys.path.insert(0, 'implementation/src')
-from embedding.dwt_svd import DWTSVDWatermarker
-
-watermarker = DWTSVDWatermarker(wavelet='db4', level=3, alpha=0.1)
-
-watermark_bits = np.array([1, 0, 1, 1, 0, 1, 0, 0])
-watermarked, sr, original_S = watermarker.embed_watermark(
-    "path/to/input.wav",
-    watermark_bits,
-    "path/to/output_watermarked.wav"
-)
-
-extracted = watermarker.extract_watermark("path/to/output_watermarked.wav", original_S)
-print("Original: ", watermark_bits)
-print("Extracted:", extracted[:len(watermark_bits)])
-```
-Run with:
+### 2. Run Interactive Streamlit Web GUI (Frontend)
 ```powershell
-uv run python your_script.py
+uv run streamlit run app.py
 ```
+*Launches the full interactive web application in your browser: live embedding studio, attack stress test simulator, AI deepfake detector with color-coded bit maps, and benchmark analytics.*
 
-### 3. Evaluate Quality
-```python
-from evaluation.metrics import calculate_snr, calculate_ber
-snr = calculate_snr(original_audio, watermarked_audio)
-ber = calculate_ber(watermark_bits, extracted_bits)
-print(f"SNR: {snr:.2f} dB | BER: {ber:.4f}")
+### 3. Run Interactive CLI Demo
+```powershell
+uv run python run_pipeline.py --demo
 ```
+*Outputs speech synthesis, embedding, SNR/PSNR verification, attack simulation, confidence scores, and rejection of spoofed AI voice.*
+
+### 4. Run Full DeepMark Empirical Benchmark & Update Graphs
+```powershell
+uv run python run_pipeline.py --benchmark
+```
+*Executes full stress test across all attacks, computes ROC-AUC / EER, writes `benchmark_results/benchmark_results.json`, and automatically saves updated high-resolution graphs in:*
+- `benchmark_results/metrics_graph.png`
+- `First_Review/Presentation/metrics_graph.png`
+- `Overleaf_Presentation/metrics_graph.png`
+
+### 4. Run Automated Test Suite
+```powershell
+uv run pytest tests/ -v
+```
+*(All 15 tests pass in ~3.5s).*
 
 ---
 
-## Dependencies
+## 4. Key Empirical Benchmark Results
 
-| Package | Purpose |
-|---------|---------|
-| `PyWavelets` | DWT/IDWT transforms |
-| `librosa` | Audio loading & processing |
-| `soundfile` | Writing watermarked .wav files |
-| `numpy` / `scipy` | Matrix ops, SVD |
-| `torch` / `torchaudio` | Dataset loading (LibriSpeech) |
-| `matplotlib` | Plotting (future use) |
-| `tqdm` | Progress bars |
-| `requests` / `python-docx` / `reportlab` | Script automation (`Scripts/`) |
+- **Noiseless Reconstruction**: $\text{BER} = 0.0000$, $\text{NCC} = 1.0000$
+- **Audio Fidelity**: $\text{SNR} = 38.60\text{ dB}$, $\text{PSNR} = 53.97\text{ dB}$ (imperceptible degradation)
+- **Deepfake AI Detection**: $\text{ROC-AUC} = 0.9170$, $\text{Equal Error Rate (EER)} = 14.29\%$
+- **Attack Robustness**:
+  - AWGN Noise 25 dB: $\text{BER} = 0.0000$ (100% confidence)
+  - AWGN Noise 15 dB: $\text{BER} = 0.0667$ (86.7% confidence)
+  - MP3 Compression 128 kbps: $\text{BER} = 0.0667$ (86.7% confidence)
+  - Unwatermarked AI Audio: $\text{BER} = 0.6444 \implies \text{Flagged as AI-Generated (0.0\% confidence)}$
 
 ---
 
-## What is Left (Next Steps)
+## 5. Next Steps for Phase 3 (Final Review Preparation)
 
-1. **Detection module** — classifier to detect AI-generated audio using watermark presence
-2. **End-to-end pipeline script** — tie embedding, evaluation, and detection together
-3. **Robustness testing** — test watermark survival under MP3 compression, noise, pitch shift
-4. **Dataset integration** — download and use ASVspoof 2021 for deepfake detection
-5. **Results visualization** — SNR/BER plots across different alpha values
-
----
-
-## Git Notes
-
-- `venv/` and `.venv/` are in `.gitignore` — never commit these
-- Datasets (`.wav`, `.flac`, `.mp3`, `dataset/`) are also excluded
-- Branch off `main` for new features
-
----
+1. **Hardware / Real-Time Evaluation**: Measure inference latency (ms/sec of audio) for real-time streaming detection.
+2. **Multi-Key Payload**: Embed payload metadata (speaker ID hash + timestamp) rather than fixed sequence.
+3. **External Real Datasets**: Run batch benchmarks on large subsets of LibriSpeech and In-The-Wild Deepfake Audio dataset.
+4. **GUI / Web Interface**: Build a lightweight interactive demonstration dashboard (e.g. Streamlit or web UI) for the final project presentation.
