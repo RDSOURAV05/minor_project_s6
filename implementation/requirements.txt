@@ -1,9 +1,0 @@
-numpy
-scipy
-librosa
-PyWavelets
-torch
-torchaudio
-matplotlib
-tqdm
-soundfile

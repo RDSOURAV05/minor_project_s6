@@ -1,0 +1,27 @@
+[project]
+name = "minor-project-s6"
+version = "0.1.0"
+description = "Audio watermarking project using DWT-SVD for AI-generated audio detection"
+readme = "HANDOFF.md"
+requires-python = ">=3.10"
+dependencies = [
+    "numpy",
+    "scipy",
+    "librosa",
+    "pywavelets",
+    "torch",
+    "torchaudio",
+    "matplotlib",
+    "tqdm",
+    "soundfile",
+]
+
+[project.optional-dependencies]
+scripts = [
+    "requests",
+    "python-docx",
+    "reportlab",
+]
+
+[tool.uv]
+package = false

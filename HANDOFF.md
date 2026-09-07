@@ -62,16 +62,14 @@ minor_project_s6/
 ├── IEEE_Research_Papers/            # 12 reference papers
 ├── Overleaf_Presentation/           # LaTeX slides for presentation
 ├── Scripts/                         # Paper fetching/automation scripts
+├── pyproject.toml                   # uv project/dependency config
+├── uv.lock                          # uv lockfile
 ├── implementation/
-│   ├── requirements.txt             # Python dependencies
 │   └── src/
 │       ├── embedding/
 │       │   └── dwt_svd.py           # Core algorithm (DWT-SVD)
-│       ├── evaluation/
-│       │   └── metrics.py           # SNR, PSNR, BER, NCC
-│       ├── data/
-│       │   └── dataset_manager.py   # Dataset loader
-│       └── detection/               # (TODO)
+│       └── evaluation/
+│           └── metrics.py           # SNR, PSNR, BER, NCC
 ├── .gitignore
 └── HANDOFF.md                       # This file
 ```
@@ -83,8 +81,9 @@ minor_project_s6/
 ### 1. Setup Environment
 ```powershell
 # From project root
-.\venv\Scripts\Activate.ps1
-pip install -r implementation\requirements.txt
+uv sync
+# For Script utilities as well:
+uv sync --extra scripts
 ```
 
 ### 2. Embed & Extract a Watermark
@@ -106,6 +105,10 @@ watermarked, sr, original_S = watermarker.embed_watermark(
 extracted = watermarker.extract_watermark("path/to/output_watermarked.wav", original_S)
 print("Original: ", watermark_bits)
 print("Extracted:", extracted[:len(watermark_bits)])
+```
+Run with:
+```powershell
+uv run python your_script.py
 ```
 
 ### 3. Evaluate Quality
@@ -129,6 +132,7 @@ print(f"SNR: {snr:.2f} dB | BER: {ber:.4f}")
 | `torch` / `torchaudio` | Dataset loading (LibriSpeech) |
 | `matplotlib` | Plotting (future use) |
 | `tqdm` | Progress bars |
+| `requests` / `python-docx` / `reportlab` | Script automation (`Scripts/`) |
 
 ---
 
