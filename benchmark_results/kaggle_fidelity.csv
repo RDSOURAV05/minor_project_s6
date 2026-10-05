@@ -1,0 +1,3 @@
+Audio_Class,SNR_Mean_dB,SNR_Std_dB,PSNR_Mean_dB,PSNR_Std_dB,SegSNR_Mean_dB,LSD_Mean_dB
+HUMAN,31.71,1.69,53.97,0.00,26.71,0.091
+AI,33.49,1.45,53.97,0.00,28.24,0.090

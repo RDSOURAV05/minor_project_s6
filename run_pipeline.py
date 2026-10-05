@@ -1,10 +1,14 @@
 """
 Audio Watermarking & AI Deepfake Detection — Main Pipeline CLI.
-Minor Project S6 — Academic Demo & Benchmark Runner.
+Minor Project S6 — Academic Demo, Benchmark Runner & Full Stack Server.
 
 Usage:
     uv run python run_pipeline.py --demo
     uv run python run_pipeline.py --benchmark
+    uv run python run_pipeline.py --kaggle [--data-dir PATH] [--n-per-class N]
+    uv run python run_pipeline.py --serve
+    uv run python run_pipeline.py --api
+    uv run python run_pipeline.py --frontend
     uv run python run_pipeline.py --plot
     uv run python run_pipeline.py --all
 """
@@ -12,9 +16,14 @@ Usage:
 import sys
 import os
 import argparse
+import subprocess
+import signal
 
 # Ensure implementation/src is on sys.path
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "implementation", "src"))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+SRC_DIR = os.path.join(BASE_DIR, "implementation", "src")
+if SRC_DIR not in sys.path:
+    sys.path.insert(0, SRC_DIR)
 
 from embedding.dwt_svd import DWTSVDWatermarker
 from evaluation.metrics import calculate_snr, calculate_psnr, calculate_ber, calculate_ncc
@@ -23,6 +32,7 @@ from data.dataset_manager import generate_synthetic_speech_signal, create_test_a
 from detection.detector import WatermarkIntegrityDetector
 from pipeline.benchmark_runner import BenchmarkRunner
 from pipeline.plot_empirical_results import EmpiricalResultsPlotter
+from pipeline.kaggle_evaluator import KaggleBenchmarkEvaluator
 
 
 def run_demo():
@@ -93,36 +103,103 @@ def run_demo():
     print("=" * 70)
 
 
+def run_kaggle_evaluation(data_dir: str = "data/kaggle_dataset", n_per_class: int = 200):
+    evaluator = KaggleBenchmarkEvaluator(data_dir=data_dir, n_per_class=n_per_class)
+    evaluator.run_full_evaluation()
+
+
+def start_api():
+    print("[Server] Starting FastAPI backend on http://127.0.0.1:8000...")
+    subprocess.run(["uvicorn", "api.main:app", "--reload", "--host", "127.0.0.1", "--port", "8000"], cwd=BASE_DIR)
+
+
+def start_frontend():
+    print("[Server] Starting React Vite dev server on http://localhost:5173...")
+    frontend_dir = os.path.join(BASE_DIR, "frontend")
+    cmd = "npm.cmd" if os.name == "nt" else "npm"
+    subprocess.run([cmd, "run", "dev"], cwd=frontend_dir)
+
+
+def start_fullstack():
+    print("=" * 70)
+    print("STARTING FULL STACK: FastAPI Backend & Vite React Frontend")
+    print("=" * 70)
+    print("  * Backend  : http://127.0.0.1:8000 (API Docs: http://127.0.0.1:8000/docs)")
+    print("  * Frontend : http://localhost:5173")
+    print("  * Press Ctrl+C to stop both servers.")
+    print("=" * 70)
+
+    frontend_dir = os.path.join(BASE_DIR, "frontend")
+    cmd = "npm.cmd" if os.name == "nt" else "npm"
+
+    p_api = subprocess.Popen(["uvicorn", "api.main:app", "--reload", "--host", "127.0.0.1", "--port", "8000"], cwd=BASE_DIR)
+    p_fe = subprocess.Popen([cmd, "run", "dev"], cwd=frontend_dir)
+
+    def shutdown(signum, frame):
+        print("\n[Server] Shutting down servers...")
+        p_api.terminate()
+        p_fe.terminate()
+        sys.exit(0)
+
+    signal.signal(signal.SIGINT, shutdown)
+    if hasattr(signal, "SIGTERM"):
+        signal.signal(signal.SIGTERM, shutdown)
+
+    try:
+        p_api.wait()
+        p_fe.wait()
+    except KeyboardInterrupt:
+        shutdown(None, None)
+
+
 def main():
     parser = argparse.ArgumentParser(description="Minor Project S6 — Audio Watermarking Pipeline CLI")
     parser.add_argument("--demo", action="store_true", help="Run interactive single-file demonstration")
-    parser.add_argument("--benchmark", action="store_true", help="Run full DeepMark-aligned benchmark suite")
+    parser.add_argument("--benchmark", action="store_true", help="Run full DeepMark-aligned synthetic benchmark suite")
+    parser.add_argument("--kaggle", action="store_true", help="Evaluate watermark system on Kaggle real-world dataset")
+    parser.add_argument("--data-dir", type=str, default="data/kaggle_dataset", help="Path to Kaggle dataset folder")
+    parser.add_argument("--n-per-class", type=int, default=200, help="Clips per class for Kaggle subsampling")
+    parser.add_argument("--serve", action="store_true", help="Start FastAPI backend and React frontend concurrently")
+    parser.add_argument("--api", action="store_true", help="Start only FastAPI backend")
+    parser.add_argument("--frontend", action="store_true", help="Start only React frontend")
     parser.add_argument("--plot", action="store_true", help="Generate publication-ready empirical graphs")
-    parser.add_argument("--all", action="store_true", help="Run demo, full benchmark, and plotting")
+    parser.add_argument("--all", action="store_true", help="Run demo, synthetic benchmark, and plotting")
 
     args = parser.parse_args()
 
-    if not any([args.demo, args.benchmark, args.plot, args.all]):
-        # Default to demo if no arguments provided
+    if not any([args.demo, args.benchmark, args.kaggle, args.serve, args.api, args.frontend, args.plot, args.all]):
         run_demo()
         return
 
-    if args.demo or args.all:
+    if args.serve:
+        start_fullstack()
+    elif args.api:
+        start_api()
+    elif args.frontend:
+        start_frontend()
+    elif args.kaggle:
+        run_kaggle_evaluation(data_dir=args.data_dir, n_per_class=args.n_per_class)
+    elif args.demo:
         run_demo()
-
-    if args.benchmark or args.all:
-        print("\nRunning full DeepMark empirical benchmark...")
+    elif args.benchmark:
+        print("\nRunning full DeepMark empirical synthetic benchmark...")
         runner = BenchmarkRunner()
         results = runner.run_comprehensive_benchmark(num_samples=5, duration=2.5)
-
         print("\nGenerating empirical metric graphs...")
         plotter = EmpiricalResultsPlotter()
         plotter.generate_presentation_metrics_figure(data=results)
-
     elif args.plot:
         print("\nGenerating empirical metric graphs from existing benchmark results...")
         plotter = EmpiricalResultsPlotter()
         plotter.generate_presentation_metrics_figure()
+    elif args.all:
+        run_demo()
+        print("\nRunning full DeepMark empirical synthetic benchmark...")
+        runner = BenchmarkRunner()
+        results = runner.run_comprehensive_benchmark(num_samples=5, duration=2.5)
+        print("\nGenerating empirical metric graphs...")
+        plotter = EmpiricalResultsPlotter()
+        plotter.generate_presentation_metrics_figure(data=results)
 
 
 if __name__ == "__main__":

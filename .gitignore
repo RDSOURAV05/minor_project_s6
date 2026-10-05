@@ -16,11 +16,22 @@ env/
 .env/
 
 # Datasets (too large for git)
-dataset/
-data/
+/dataset/
+/data/
+/kaggle_cache/
+/kaggle/
 *.flac
 *.wav
 *.mp3
+*.zip
+.cache/
+!samples/*.wav
+
+
+# Frontend
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
 
 # IDE & Editor
 .vscode/

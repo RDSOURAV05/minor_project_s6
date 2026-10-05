@@ -17,6 +17,9 @@ dependencies = [
     "scikit-learn",
     "pytest",
     "streamlit",
+    "fastapi>=0.142.2",
+    "kaggle>=1.7.4.5",
+    "httpx>=0.28.1",
 ]
 
 [project.optional-dependencies]
