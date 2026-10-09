@@ -6,6 +6,11 @@ import {
   BarChart3,
   Sun,
   Moon,
+  Info,
+  CheckCircle,
+  AlertTriangle,
+  XCircle,
+  X
 } from 'lucide-react';
 import EmbedTab from './tabs/EmbedTab';
 import AttackTab from './tabs/AttackTab';
@@ -20,6 +25,16 @@ export default function App() {
   const [session, setSession] = useState(null);
   const [samples, setSamples] = useState([]);
   const [apiConnected, setApiConnected] = useState(false);
+  
+  // Toast Notification State
+  const [toast, setToast] = useState({ show: false, message: '', type: 'info' });
+
+  const showToast = (message, type = 'info') => {
+    setToast({ show: true, message, type });
+    setTimeout(() => {
+      setToast(prev => ({ ...prev, show: false }));
+    }, 4000);
+  };
 
   // Apply dark mode class to root document
   useEffect(() => {
@@ -61,8 +76,29 @@ export default function App() {
     loadSamples();
   }, []);
 
+  // Helper for toast icons
+  const getToastIcon = () => {
+    switch(toast.type) {
+      case 'success': return <CheckCircle size={18} className="text-success" />;
+      case 'warning': return <AlertTriangle size={18} className="text-warning" />;
+      case 'error': return <XCircle size={18} className="text-danger" />;
+      default: return <Info size={18} className="text-accent-cyan" />;
+    }
+  };
+
   return (
     <>
+      {/* Toast Notification Overlay */}
+      <div className={`toast-container ${toast.show ? 'show' : ''}`}>
+        <div className={`toast-message toast-${toast.type}`}>
+          {getToastIcon()}
+          <span>{toast.message}</span>
+          <button className="toast-close" onClick={() => setToast({ ...toast, show: false })}>
+            <X size={14} />
+          </button>
+        </div>
+      </div>
+
       {/* Aceternity Grid / Dot Pattern Background & Ambient Auroras */}
       <div className="aceternity-bg" />
       <div className="aurora-glow-1" />
@@ -143,6 +179,7 @@ export default function App() {
               session={session}
               setSession={setSession}
               samples={samples}
+              showToast={showToast}
             />
           )}
 
@@ -150,6 +187,7 @@ export default function App() {
             <AttackTab
               apiBase={API_BASE}
               session={session}
+              showToast={showToast}
             />
           )}
 
@@ -158,12 +196,14 @@ export default function App() {
               apiBase={API_BASE}
               session={session}
               samples={samples}
+              showToast={showToast}
             />
           )}
 
           {activeTab === 'benchmarks' && (
             <BenchmarkTab
               apiBase={API_BASE}
+              showToast={showToast}
             />
           )}
         </main>
