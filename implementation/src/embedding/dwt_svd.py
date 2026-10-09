@@ -146,8 +146,14 @@ class DWTSVDWatermarker:
             qim_step = original_S_or_metadata.get('qim_step', self.qim_step)
             if watermark_len is None:
                 watermark_len = original_S_or_metadata.get('watermark_length')
-        else:
+        elif original_S_or_metadata is not None:
             original_S = np.asarray(original_S_or_metadata)
+            U_orig = None
+            Vt_orig = None
+            mode = self.mode
+            qim_step = self.qim_step
+        else:
+            original_S = None
             U_orig = None
             Vt_orig = None
             mode = self.mode
@@ -169,7 +175,7 @@ class DWTSVDWatermarker:
             delta = qim_step * (np.mean(S_prime) + 1e-6)
             k = np.round(S_prime / delta).astype(int)
             extracted_w = (k % 2 != 0).astype(np.int32)
-        elif U_orig is not None and Vt_orig is not None:
+        elif U_orig is not None and Vt_orig is not None and original_S is not None and getattr(original_S, 'shape', None):
             # Projection onto original orthonormal bases: avoids eigenvalue permutation/sorting errors
             min_dim = min(cA_matrix.shape[0], U_orig.shape[0], Vt_orig.shape[1])
             mat_sub = cA_matrix[:min_dim, :min_dim]
@@ -179,12 +185,18 @@ class DWTSVDWatermarker:
             comp_len = min(len(S_proj), len(original_S))
             diff = (S_proj[:comp_len] - original_S[:comp_len]) / self.alpha
             extracted_w = np.where(diff > 0, 1, 0).astype(np.int32)
-        else:
+        elif original_S is not None and getattr(original_S, 'shape', None) and len(original_S.shape) > 0:
             # Fallback when only original_S vector is available
             U, S_prime, Vt = np.linalg.svd(cA_matrix, full_matrices=False)
             comp_len = min(len(S_prime), len(original_S))
             diff = (S_prime[:comp_len] - original_S[:comp_len]) / self.alpha
             extracted_w = np.where(diff > 0, 1, 0).astype(np.int32)
+        else:
+            # Blind / unwatermarked fallback: No original S available
+            U, S_prime, Vt = np.linalg.svd(cA_matrix, full_matrices=False)
+            delta = qim_step * (np.mean(S_prime) + 1e-6)
+            k = np.round(S_prime / delta).astype(int)
+            extracted_w = (k % 2 != 0).astype(np.int32)
 
         if watermark_len is not None and watermark_len <= len(extracted_w):
             return extracted_w[:watermark_len]

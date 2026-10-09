@@ -153,6 +153,7 @@ export default function App() {
           <DetectTab
             apiBase={API_BASE}
             session={session}
+            samples={samples}
           />
         )}
 

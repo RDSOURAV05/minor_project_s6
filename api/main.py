@@ -365,6 +365,7 @@ async def attack_watermark(
 @app.post("/api/detect")
 async def detect_authenticity(
     file: Optional[UploadFile] = File(None),
+    sample_id: Optional[str] = Form(None),
     session_id: Optional[str] = Form(None),
     use_attacked: bool = Form(False),
     key_seed: int = Form(12345),
@@ -374,7 +375,8 @@ async def detect_authenticity(
 ):
     """
     Authenticate audio and evaluate deepfake / tampering integrity.
-    Returns verdict, confidence, BER, NCC, and tamper localization segments.
+    Supports uploaded audio file, preset sample_id, or active session audio.
+    Returns verdict, confidence, BER, NCC, tamper localization segments, and waveform data.
     """
     signal = None
     metadata = None
@@ -390,14 +392,21 @@ async def detect_authenticity(
         metadata = sess["metadata"]
         block_metadata = sess.get("block_metadata")
         sr = sess["sr"]
-        alpha = sess["alpha"]
-        mode = sess["mode"]
-        key_seed = sess["key_seed"]
-        watermark_len = sess["watermark_len"]
+        alpha = sess.get("alpha", alpha)
+        mode = sess.get("mode", mode)
+        if key_seed == 12345 and "key_seed" in sess:
+            key_seed = sess["key_seed"]
+        if watermark_len == 45 and "watermark_len" in sess:
+            watermark_len = sess["watermark_len"]
 
     if file is not None and len(await file.read()) > 0:
         await file.seek(0)
         signal = _load_audio_bytes(await file.read(), target_sr=sr)
+    elif sample_id:
+        sample_path = os.path.join(BASE_DIR, "samples", sample_id if sample_id.endswith(".wav") else f"{sample_id}.wav")
+        if os.path.exists(sample_path):
+            with open(sample_path, "rb") as f:
+                signal = _load_audio_bytes(f.read(), target_sr=sr)
 
     if signal is None:
         raise HTTPException(status_code=400, detail="No audio provided for detection.")
@@ -450,7 +459,9 @@ async def detect_authenticity(
         "ncc": round(det_result.ncc, 4),
         "tamper_segments": tamper_segments,
         "duration": round(len(signal) / sr, 2),
-        "sample_rate": sr
+        "sample_rate": sr,
+        "waveform": _downsample_waveform(signal, 300),
+        "audio_url": _audio_to_base64_wav(signal, sr)
     }
 
 
