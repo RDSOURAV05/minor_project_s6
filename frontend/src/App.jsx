@@ -1,4 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import {
+  Layers,
+  Flame,
+  ScanLine,
+  BarChart3,
+  Sun,
+  Moon,
+} from 'lucide-react';
 import EmbedTab from './tabs/EmbedTab';
 import AttackTab from './tabs/AttackTab';
 import DetectTab from './tabs/DetectTab';
@@ -44,7 +52,7 @@ export default function App() {
             setSamples(data.samples);
           }
         }
-      } catch (e) {
+      } catch {
         // Handled gracefully
       }
     };
@@ -54,115 +62,112 @@ export default function App() {
   }, []);
 
   return (
-    <div className="app-container">
-      {/* Academic Header */}
-      <header className="app-header">
-        <div>
-          <h1 className="brand-title">Audio Watermarking & AI Detection System</h1>
-          <p className="brand-subtitle">
-            DWT-SVD Multi-Level Watermarking Testbed &bull; Minor Project S6 &bull; DeepMark Aligned
-          </p>
-        </div>
+    <>
+      {/* Aceternity Grid / Dot Pattern Background & Ambient Auroras */}
+      <div className="aceternity-bg" />
+      <div className="aurora-glow-1" />
+      <div className="aurora-glow-2" />
 
-        <div className="header-actions">
-          {/* API Connection Indicator */}
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '6px',
-              fontSize: '0.75rem',
-              color: apiConnected ? 'var(--success)' : 'var(--danger)',
-              fontWeight: 600,
-              background: 'var(--bg-surface-alt)',
-              padding: '6px 10px',
-              borderRadius: '6px',
-              border: '1px solid var(--border-color)',
-            }}
-          >
-            <div
-              style={{
-                width: '8px',
-                height: '8px',
-                borderRadius: '50%',
-                background: apiConnected ? 'var(--success)' : 'var(--danger)',
-              }}
-            />
-            {apiConnected ? 'API Connected' : 'API Offline (localhost:8000)'}
+      <div className="app-container">
+        {/* Aceternity Hero Header */}
+        <header className="hero-header">
+          <div className="hero-top-row">
+            <div>
+              <h1 className="hero-title">Audio Watermarking &amp; AI Detection System</h1>
+              <p className="hero-subtitle">
+                Dual-layer orthonormal wavelet watermarking for proactive deepfake attribution,
+                tamper localization, and Kaggle acoustic validation.
+              </p>
+            </div>
+
+            <div className="header-actions">
+              {/* API Connection Indicator */}
+              <div className="status-pill">
+                <div className={`status-dot ${apiConnected ? '' : 'offline'}`} />
+                <span>{apiConnected ? 'API Connected' : 'API Offline (8000)'}</span>
+              </div>
+
+              {/* Theme Toggle Button */}
+              <button
+                className="btn btn-secondary"
+                onClick={() => setDarkMode(!darkMode)}
+                title="Toggle Theme"
+                style={{ padding: '7px 14px', fontSize: '0.8125rem' }}
+              >
+                {darkMode ? <Sun size={15} /> : <Moon size={15} />}
+                <span>{darkMode ? 'Light' : 'Dark'}</span>
+              </button>
+            </div>
           </div>
+        </header>
 
-          {/* Theme Toggle Button */}
-          <button
-            className="btn btn-secondary"
-            onClick={() => setDarkMode(!darkMode)}
-            title="Toggle Light / Dark Mode"
-            style={{ padding: '6px 12px', fontSize: '0.8125rem' }}
-          >
-            {darkMode ? 'Light Theme' : 'Dark Theme'}
-          </button>
+        {/* Floating Pill Nav Tabs (Aceternity Floating Dock Style) */}
+        <div className="nav-tabs-wrapper">
+          <nav className="nav-tabs">
+            <button
+              className={`nav-tab-btn ${activeTab === 'embed' ? 'active' : ''}`}
+              onClick={() => setActiveTab('embed')}
+            >
+              <Layers size={15} />
+              <span>1. Embed &amp; Fidelity</span>
+            </button>
+            <button
+              className={`nav-tab-btn ${activeTab === 'attacks' ? 'active' : ''}`}
+              onClick={() => setActiveTab('attacks')}
+            >
+              <Flame size={15} />
+              <span>2. Attacks &amp; Robustness</span>
+            </button>
+            <button
+              className={`nav-tab-btn ${activeTab === 'detect' ? 'active' : ''}`}
+              onClick={() => setActiveTab('detect')}
+            >
+              <ScanLine size={15} />
+              <span>3. Detection &amp; Authenticity</span>
+            </button>
+            <button
+              className={`nav-tab-btn ${activeTab === 'benchmarks' ? 'active' : ''}`}
+              onClick={() => setActiveTab('benchmarks')}
+            >
+              <BarChart3 size={15} />
+              <span>4. Benchmarks &amp; Kaggle</span>
+            </button>
+          </nav>
         </div>
-      </header>
 
-      {/* Main Tabs Navigation */}
-      <nav className="nav-tabs">
-        <button
-          className={`nav-tab-btn ${activeTab === 'embed' ? 'active' : ''}`}
-          onClick={() => setActiveTab('embed')}
-        >
-          1. Embed &amp; Fidelity
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'attacks' ? 'active' : ''}`}
-          onClick={() => setActiveTab('attacks')}
-        >
-          2. Attacks &amp; Robustness
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'detect' ? 'active' : ''}`}
-          onClick={() => setActiveTab('detect')}
-        >
-          3. Detection &amp; Authenticity
-        </button>
-        <button
-          className={`nav-tab-btn ${activeTab === 'benchmarks' ? 'active' : ''}`}
-          onClick={() => setActiveTab('benchmarks')}
-        >
-          4. Benchmarks &amp; Kaggle Dataset
-        </button>
-      </nav>
+        {/* Tab Panels */}
+        <main>
+          {activeTab === 'embed' && (
+            <EmbedTab
+              apiBase={API_BASE}
+              session={session}
+              setSession={setSession}
+              samples={samples}
+            />
+          )}
 
-      {/* Tab Panels */}
-      <main>
-        {activeTab === 'embed' && (
-          <EmbedTab
-            apiBase={API_BASE}
-            session={session}
-            setSession={setSession}
-            samples={samples}
-          />
-        )}
+          {activeTab === 'attacks' && (
+            <AttackTab
+              apiBase={API_BASE}
+              session={session}
+            />
+          )}
 
-        {activeTab === 'attacks' && (
-          <AttackTab
-            apiBase={API_BASE}
-            session={session}
-          />
-        )}
+          {activeTab === 'detect' && (
+            <DetectTab
+              apiBase={API_BASE}
+              session={session}
+              samples={samples}
+            />
+          )}
 
-        {activeTab === 'detect' && (
-          <DetectTab
-            apiBase={API_BASE}
-            session={session}
-            samples={samples}
-          />
-        )}
-
-        {activeTab === 'benchmarks' && (
-          <BenchmarkTab
-            apiBase={API_BASE}
-          />
-        )}
-      </main>
-    </div>
+          {activeTab === 'benchmarks' && (
+            <BenchmarkTab
+              apiBase={API_BASE}
+            />
+          )}
+        </main>
+      </div>
+    </>
   );
 }
